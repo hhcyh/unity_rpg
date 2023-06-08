@@ -489,14 +489,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 12
-  jumpForce: 8
+  jumpForce: 20
+  dashCoolDown: 1
+  dashSpeed: 30
+  dashDuration: 0.2
   groundCheck: {fileID: 1996422984}
   groundCheckDistance: 0.15
   wallCheck: {fileID: 791261382}
   wallCheckDistance: 0.2
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   animator: {fileID: 1970230595}
   rb: {fileID: 1714943905}
 --- !u!1 &1970230592

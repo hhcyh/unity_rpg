@@ -7,7 +7,14 @@ public class Player : MonoBehaviour
 {
     [Header("Move Info")]
     public float moveSpeed = 12f;
-    public float jumpForce = 8f;
+    public float jumpForce = 20f;
+
+    [Header("Dash Info")]
+    [SerializeField] private float dashCoolDown = 1f;
+    private float dashUsageTimer;
+    public float dashSpeed = 20f;
+    public float dashDuration = 0.2f;
+    public float dashDir { get; private set; }
 
     [Header("Collision Info")]
     [SerializeField] private Transform groundCheck;
@@ -33,6 +40,7 @@ public class Player : MonoBehaviour
     public PlayerMoveState moveState { get; private set; }
     public PlayerJumpState jumpState { get; private set; }
     public PlayerAirState airState { get; private set; }
+    public PlayerDashState dashState { get; private set; }
     #endregion
     private void Awake()
     {
@@ -42,6 +50,7 @@ public class Player : MonoBehaviour
         moveState = new PlayerMoveState(this, stateMachine, "Move");
         jumpState = new PlayerJumpState(this, stateMachine, "Jump");
         airState = new PlayerAirState(this, stateMachine, "Jump");
+        dashState = new PlayerDashState(this, stateMachine, "Dash");
     }
 
     private void Start()
@@ -55,9 +64,27 @@ public class Player : MonoBehaviour
     private void Update()
     {
         stateMachine.currentState.Update();
-    
+        CheckForDashInput();
+       
     }
 
+    public void CheckForDashInput()
+    {
+        dashUsageTimer -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && dashUsageTimer < 0)
+        {
+            dashUsageTimer = dashCoolDown;
+            dashDir = Input.GetAxisRaw("Horizontal");
+
+            if (dashDir == 0)
+            {
+                dashDir = facingDir;
+            }
+
+            stateMachine.ChangeState(dashState);
+        }
+    }
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
