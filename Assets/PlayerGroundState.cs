@@ -22,6 +22,11 @@ public class PlayerGroundState : PlayerState
     {
         base.Update();
 
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            stateMachine.ChangeState(player.primaryAttackState);
+        }
+
         if (!player.IsGroundDetected())
         {
             stateMachine.ChangeState(player.airState);
