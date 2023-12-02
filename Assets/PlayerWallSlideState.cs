@@ -24,6 +24,7 @@ public class PlayerWallSlideState : PlayerState
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            Debug.Log("Ìø1´Î");
             stateMachine.ChangeState(player.wallJumpState);
             return;
         }
